@@ -1,0 +1,36 @@
+{
+  "name": "iperson1337/opendxp-pricat-bundle",
+  "description": "PRICAT (EDI price catalogue) import and product reconciliation for OpenDXP: configurable XML→DataObject mapping, position↔product compare/accept/decline admin UI",
+  "type": "opendxp-bundle",
+  "license": "MIT",
+  "require": {
+    "php": "^8.3",
+    "ext-dom": "*",
+    "ext-libxml": "*",
+    "nesbot/carbon": "^3.0",
+    "open-dxp/admin-bundle": "^1.0",
+    "open-dxp/opendxp": "^1.0",
+    "symfony/framework-bundle": "^7.4",
+    "symfony/translation": "^7.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5 || ^10.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Iperson1337\\OpenDxpPricatBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Iperson1337\\OpenDxpPricatBundle\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "opendxp": {
+      "bundles": [
+        "Iperson1337\\OpenDxpPricatBundle\\OpenDxpPricatBundle"
+      ]
+    }
+  }
+}

@@ -1,0 +1,35 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    # Typed configuration; the `$config` argument is injected by OpenDxpPricatExtension.
+    Iperson1337\OpenDxpPricatBundle\Model\PricatConfig:
+        factory: ['Iperson1337\OpenDxpPricatBundle\Model\PricatConfig', 'fromArray']
+        arguments:
+            $config: []
+
+    # bin/console opendxp:bundle:install OpenDxpPricatBundle — creates the admin permission
+    Iperson1337\OpenDxpPricatBundle\Installer:
+        public: true
+        arguments:
+            $bundle: "@=service('kernel').getBundle('OpenDxpPricatBundle')"
+
+    Iperson1337\OpenDxpPricatBundle\Service\:
+        resource: '../src/Service'
+
+    Iperson1337\OpenDxpPricatBundle\EventSubscriber\:
+        resource: '../src/EventSubscriber'
+
+    Iperson1337\OpenDxpPricatBundle\Command\:
+        resource: '../src/Command'
+
+    # Controllers answer in the admin user's language: AdminUserTranslator resolves the locale from the
+    # logged-in user (the plain TranslatorInterface would use the request locale, i.e. the default language).
+    Iperson1337\OpenDxpPricatBundle\Controller\:
+        resource: '../src/Controller'
+        public: true
+        tags: ['controller.service_arguments']
+        bind:
+            Symfony\Contracts\Translation\TranslatorInterface $translator: '@OpenDxp\Bundle\AdminBundle\Translation\AdminUserTranslator'

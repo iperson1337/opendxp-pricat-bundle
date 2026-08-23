@@ -1,0 +1,7 @@
+# Auto-loaded by OpenDXP (BundleRoutingLoader picks up config/opendxp/routing.yaml of every bundle).
+# Routes are exposed to FOSJsRouting so the admin JS resolves them via Routing.generate().
+_iperson1337_opendxp_pricat_admin:
+    resource: "../../src/Controller/"
+    type: attribute
+    options:
+        expose: true
