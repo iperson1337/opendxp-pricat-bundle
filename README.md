@@ -21,13 +21,15 @@ What it does:
 ## Requirements
 
 - OpenDXP `^1.0` with the classic admin bundle (`open-dxp/admin-bundle`).
-- DataObject classes `Pricat` and `PricatPosition` in the application (`var/classes/definition_Pricat.php`,
-  `definition_PricatPosition.php`). The bundle ships no class definitions — it is typed against the
-  generated `OpenDxp\Model\DataObject\Pricat` / `PricatPosition` classes of the host application.
+- DataObject classes `Pricat` and `PricatPosition`. The installer creates them from
+  `install/class_Pricat_export.json` / `install/class_PricatPosition_export.json` **when they do not exist
+  yet**; an application that already owns the classes keeps its own definitions untouched
+  (`var/classes/definition_*.php` stays the source of truth). The bundle is typed against the generated
+  `OpenDxp\Model\DataObject\Pricat` / `PricatPosition` classes. If you bring your own definitions,
   `PricatPosition` must have a `Pricat` many-to-one relation, `processed`, `confirmation` and
   `rejectionComment` fields; everything else is mapped by name.
 - The admin permission (`iperson1337_opendxp_pricat.permission`, `pricat_bundle` by default) is created
-  by the bundle installer — run `bin/console opendxp:bundle:install OpenDxpPricatBundle` once (idempotent).
+  by the installer as well — run `bin/console opendxp:bundle:install OpenDxpPricatBundle` once (idempotent).
 
 ## Installation
 
@@ -45,10 +47,15 @@ Then:
 
 ```bash
 bin/console cache:clear
-bin/console opendxp:bundle:install OpenDxpPricatBundle   # creates the admin permission (idempotent)
+bin/console opendxp:bundle:install OpenDxpPricatBundle   # classes (if missing) + admin permission, idempotent
+bin/console opendxp:build:classes   # generate the PHP classes when the installer created the definitions
 bin/console assets:install          # publishes public/ to /bundles/opendxppricat/
 bin/console fos:js-routing:dump     # routes are exposed for Routing.generate() in the admin JS
 ```
+
+To refresh the shipped exports after changing the definitions in a project, regenerate them with
+`ClassDefinition\Service::generateClassDefinitionJson()` (the same JSON the admin "Export" button
+produces) and drop `modificationDate` from the files.
 
 Routes (`config/opendxp/routing.yaml`) are picked up automatically by OpenDXP's bundle routing loader;
 no entry in the application's `config/routes.yaml` is needed.
@@ -135,7 +142,8 @@ bin/console pricat:import path/to/pricat_1.xml [path/to/pricat_2.xml ...]
 ```
 src/
 ├── OpenDxpPricatBundle.php                 # JS/CSS asset registration, installer hook
-├── Installer.php                           # opendxp:bundle:install → admin permission
+├── Installer.php                           # opendxp:bundle:install → classes (if missing) + admin permission
+install/class_{Pricat,PricatPosition}_export.json  # class definitions for fresh installations
 ├── DependencyInjection/                    # Configuration (defaults) + extension
 ├── Model/                                  # PricatConfig, ProductFieldMapping, ParsedPricat, CompareRow, ImportResult
 ├── Enum/                                   # PricatAction, PositionAction (codes → translation keys), PositionFilter
