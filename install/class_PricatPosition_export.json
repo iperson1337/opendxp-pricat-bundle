@@ -1139,20 +1139,20 @@
                                         "invisible": false,
                                         "visibleGridView": true,
                                         "visibleSearch": false,
-                                        "yesLabel": "",
-                                        "noLabel": "",
-                                        "emptyLabel": "",
+                                        "yesLabel": "yes",
+                                        "noLabel": "no",
+                                        "emptyLabel": "empty",
                                         "options": [
                                             {
-                                                "key": "",
+                                                "key": "empty",
                                                 "value": 0
                                             },
                                             {
-                                                "key": "",
+                                                "key": "yes",
                                                 "value": 1
                                             },
                                             {
-                                                "key": "",
+                                                "key": "no",
                                                 "value": -1
                                             }
                                         ],
@@ -1540,20 +1540,20 @@
                                         "invisible": false,
                                         "visibleGridView": true,
                                         "visibleSearch": false,
-                                        "yesLabel": "",
-                                        "noLabel": "",
-                                        "emptyLabel": "",
+                                        "yesLabel": "yes",
+                                        "noLabel": "no",
+                                        "emptyLabel": "empty",
                                         "options": [
                                             {
-                                                "key": "",
+                                                "key": "empty",
                                                 "value": 0
                                             },
                                             {
-                                                "key": "",
+                                                "key": "yes",
                                                 "value": 1
                                             },
                                             {
-                                                "key": "",
+                                                "key": "no",
                                                 "value": -1
                                             }
                                         ],
