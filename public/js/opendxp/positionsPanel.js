@@ -50,7 +50,7 @@ opendxp.plugin.pricat.positionsPanel = Class.create({
             return '<b>' + t(label) + ':</b> ' + dash(value) + '&nbsp;&nbsp; ';
         };
         const counter = function (label, value, cls) {
-            return '<span class="pricat-counter ' + (cls || '') + '">' + t(label) + ': <b>' + value + '</b></span>';
+            return '<span class="pricat-counter ' + (cls || '') + '">' + t(label) + ': <b>' + enc(value) + '</b></span>';
         };
 
         return '<div>'
@@ -141,11 +141,11 @@ opendxp.plugin.pricat.positionsPanel = Class.create({
             },
             columns: [
                 {text: t('plugin_pimcore_pricat_col_id'), dataIndex: 'id', width: 80},
-                {text: t('plugin_pimcore_pricat_col_position_number'), dataIndex: 'positionNumber', width: 60},
-                {text: t('plugin_pimcore_pricat_col_action'), dataIndex: 'action', width: 110},
-                {text: t('plugin_pimcore_pricat_col_product'), dataIndex: 'product', width: 150},
-                {text: t('plugin_pimcore_pricat_col_product_name'), dataIndex: 'productName', flex: 3},
-                {text: t('plugin_pimcore_pricat_col_region'), dataIndex: 'region', width: 80},
+                {text: t('plugin_pimcore_pricat_col_position_number'), dataIndex: 'positionNumber', renderer: Ext.util.Format.htmlEncode, width: 60},
+                {text: t('plugin_pimcore_pricat_col_action'), dataIndex: 'action', renderer: Ext.util.Format.htmlEncode, width: 110},
+                {text: t('plugin_pimcore_pricat_col_product'), dataIndex: 'product', renderer: Ext.util.Format.htmlEncode, width: 150},
+                {text: t('plugin_pimcore_pricat_col_product_name'), dataIndex: 'productName', renderer: Ext.util.Format.htmlEncode, flex: 3},
+                {text: t('plugin_pimcore_pricat_col_region'), dataIndex: 'region', renderer: Ext.util.Format.htmlEncode, width: 80},
                 {
                     text: t('plugin_pimcore_pricat_col_processed'),
                     dataIndex: 'processed',
@@ -154,8 +154,8 @@ opendxp.plugin.pricat.positionsPanel = Class.create({
                         return value ? t('plugin_pimcore_pricat_yes') : t('plugin_pimcore_pricat_no');
                     }
                 },
-                {text: t('plugin_pimcore_pricat_col_confirmation'), dataIndex: 'confirmationLabel', width: 120},
-                {text: t('plugin_pimcore_pricat_col_rejection_comment'), dataIndex: 'rejectionComment', flex: 2},
+                {text: t('plugin_pimcore_pricat_col_confirmation'), dataIndex: 'confirmationLabel', renderer: Ext.util.Format.htmlEncode, width: 120},
+                {text: t('plugin_pimcore_pricat_col_rejection_comment'), dataIndex: 'rejectionComment', renderer: Ext.util.Format.htmlEncode, flex: 2},
                 {
                     xtype: 'actioncolumn',
                     text: t('plugin_pimcore_pricat_col_actions'),
@@ -189,7 +189,7 @@ opendxp.plugin.pricat.positionsPanel = Class.create({
 
         this.panel = new Ext.Panel({
             id: this.panelId,
-            title: t('plugin_pimcore_pricat_tab_pricat') + (this.pricatNumber || this.pricatId),
+            title: t('plugin_pimcore_pricat_tab_pricat') + Ext.util.Format.htmlEncode(this.pricatNumber || this.pricatId),
             iconCls: 'opendxp_icon_table',
             border: false,
             layout: 'border',
@@ -225,7 +225,7 @@ opendxp.plugin.pricat.positionsPanel = Class.create({
 
     openCompare: function (record) {
         if (record.get('processed')) {
-            Ext.Msg.alert(t('plugin_pimcore_pricat_message'), t('plugin_pimcore_pricat_error_position_processed').replace('%id%', record.get('id')));
+            Ext.Msg.alert(t('plugin_pimcore_pricat_message'), t('plugin_pimcore_pricat_error_position_processed').replace('%id%', Ext.util.Format.htmlEncode(record.get('id'))));
             return;
         }
         new opendxp.plugin.pricat.compareWindow(record.get('id'), this.reload.bind(this)).show();

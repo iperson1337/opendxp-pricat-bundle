@@ -69,13 +69,14 @@ opendxp.plugin.pricat.importWindow = Class.create({
             success: function (fp, action) {
                 this.window.close();
                 const result = action.result || {};
-                let message = result.message || t('plugin_pimcore_pricat_import_success');
+                // server messages carry values taken from the uploaded file — they are text, never markup
+                let message = result.message ? Ext.util.Format.htmlEncode(result.message) : t('plugin_pimcore_pricat_import_success');
                 const unmapped = [].concat(
                     (result.data && result.data.unmappedHeaderTags) || [],
                     (result.data && result.data.unmappedPositionTags) || []
                 );
                 if (unmapped.length) {
-                    message += '<br><br>' + t('plugin_pimcore_pricat_import_unmapped') + ': ' + unmapped.join(', ');
+                    message += '<br><br>' + t('plugin_pimcore_pricat_import_unmapped') + ': ' + Ext.util.Format.htmlEncode(unmapped.join(', '));
                 }
                 opendxp.helpers.showNotification(t('plugin_pimcore_pricat_message'), message, 'success');
                 if (Ext.isFunction(this.onImported)) {
@@ -84,7 +85,9 @@ opendxp.plugin.pricat.importWindow = Class.create({
             }.bind(this),
             failure: function (fp, action) {
                 const result = action.result || {};
-                const message = result.message || t('plugin_pimcore_pricat_error_import_failed').replace('%error%', action.response ? action.response.statusText : '');
+                const message = result.message
+                    ? Ext.util.Format.htmlEncode(result.message)
+                    : t('plugin_pimcore_pricat_error_import_failed').replace('%error%', Ext.util.Format.htmlEncode(action.response ? action.response.statusText : ''));
                 Ext.Msg.alert(t('plugin_pimcore_pricat_message'), message);
             }
         });

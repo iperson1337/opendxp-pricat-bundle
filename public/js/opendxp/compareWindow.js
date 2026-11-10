@@ -18,7 +18,7 @@ opendxp.plugin.pricat.compareWindow = Class.create({
             success: function (response) {
                 const result = Ext.decode(response.responseText);
                 if (!result.success) {
-                    Ext.Msg.alert(t('plugin_pimcore_pricat_message'), result.message);
+                    Ext.Msg.alert(t('plugin_pimcore_pricat_message'), Ext.util.Format.htmlEncode(result.message));
                     return;
                 }
                 if (!result.data.rows || !result.data.rows.length) {
@@ -108,7 +108,7 @@ opendxp.plugin.pricat.compareWindow = Class.create({
         });
 
         const productLink = data.product
-            ? '<a href="#" class="pricat-product-link" data-id="' + data.product.id + '">' + Ext.util.Format.htmlEncode(data.product.path) + '</a>'
+            ? '<a href="#" class="pricat-product-link" data-id="' + Ext.util.Format.htmlEncode(data.product.id) + '">' + Ext.util.Format.htmlEncode(data.product.path) + '</a>'
             : '';
 
         this.window = new Ext.Window({
@@ -251,19 +251,19 @@ opendxp.plugin.pricat.compareWindow = Class.create({
 
     handleResult: function (result) {
         if (!result.success) {
-            Ext.Msg.alert(t('plugin_pimcore_pricat_message'), result.message);
+            Ext.Msg.alert(t('plugin_pimcore_pricat_message'), Ext.util.Format.htmlEncode(result.message));
             return;
         }
         if (this.window) {
             this.window.close();
         }
-        opendxp.helpers.showNotification(t('plugin_pimcore_pricat_message'), result.message, 'success');
+        opendxp.helpers.showNotification(t('plugin_pimcore_pricat_message'), Ext.util.Format.htmlEncode(result.message), 'success');
         if (Ext.isFunction(this.onProcessed)) {
             this.onProcessed();
         }
     },
 
     handleTransportFailure: function (response) {
-        Ext.Msg.alert(t('plugin_pimcore_pricat_message'), response.statusText || 'HTTP ' + response.status);
+        Ext.Msg.alert(t('plugin_pimcore_pricat_message'), Ext.util.Format.htmlEncode(response.statusText || 'HTTP ' + response.status));
     }
 });
